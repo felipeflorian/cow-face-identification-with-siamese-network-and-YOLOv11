@@ -1,0 +1,10 @@
+# Dataset root directory relative to the yolov5 directory
+path: /content/drive/MyDrive/Vision/Proyecto/partitioned_data_new
+
+# Train/val/test sets: specify directories, *.txt files, or lists
+train: train
+val: val 
+test: test
+
+nc: 1
+names: ['cow_0']
