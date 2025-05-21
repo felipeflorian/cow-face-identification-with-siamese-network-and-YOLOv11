@@ -1,0 +1,48 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+{% block title %}Identificar vacas | Cow Face ID{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style_table.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="card">
+  <div id="card-content">
+    <h2 id="card-title">Identificar vacas</h2>
+    <div class="underline-title"></div>
+
+    <form class="form" method="post"
+          action="{{ url_for('web.identify_web') }}"
+          enctype="multipart/form-data">
+      <label for="image" class="form-label mt-3">Sube una imagen</label>
+      <input id="image" class="form-control form-content"
+             type="file" name="image" accept="image/*" required>
+      <div class="form-border"></div>
+
+      <button id="submit-btn" class="btn btn-primary mt-3">
+        Subir y analizar
+      </button>
+    </form>
+  </div>
+</div>
+
+{% if identified %}
+  <div class="mt-5">
+    <h3>Resultado</h3>
+    <img class="img-fluid rounded" src="{{ image_url }}" alt="Resultado">
+    <ul class="list-group list-group-flush mt-3">
+      {% for d in results %}
+        <li class="list-group-item">
+          <strong>{{ d.cow_id }}</strong>
+          <span class="text-muted">
+            
+              — conf {{ '%.2f' % d.confidence }} 
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+{% endblock %}
+<!-- — conf {{ '%.2f' % d.confidence }} (dist {{ '%.3f' % d.distance }}) -->
