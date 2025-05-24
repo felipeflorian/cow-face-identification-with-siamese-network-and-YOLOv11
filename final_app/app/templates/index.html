@@ -4,6 +4,27 @@
 
 {% block extra_css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style_table.css') }}">
+    <style>
+    .result‐box {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: .5rem;
+      margin-top: .5rem;
+    }
+    .image-card {
+      display: flex;
+      margin-bottom: 2rem;
+    }
+    .image-card img {
+      max-width: 200px;
+      margin-right: 1rem;
+    }
+    .pred-list li {
+      padding: .25rem 0;
+    }
+  </style>
+
 {% endblock %}
 
 {% block content %}
@@ -15,9 +36,9 @@
     <form class="form" method="post"
           action="{{ url_for('web.identify_web') }}"
           enctype="multipart/form-data">
-      <label for="image" class="form-label mt-3">Sube una imagen</label>
-      <input id="image" class="form-control form-content"
-             type="file" name="image" accept="image/*" required>
+      <label for="images" class="form-label mt-3">Sube una o más imágenes</label>
+      <input id="images" class="form-control form-content"
+             type="file" name="images" accept="image/*" multiple required>
       <div class="form-border"></div>
 
       <button id="submit-btn" class="btn btn-primary mt-3">
@@ -27,22 +48,32 @@
   </div>
 </div>
 
+
+
 {% if identified %}
-  <div class="mt-5">
-    <h3>Resultado</h3>
-    <img class="img-fluid rounded" src="{{ image_url }}" alt="Resultado">
-    <ul class="list-group list-group-flush mt-3">
-      {% for d in results %}
-        <li class="list-group-item">
-          <strong>{{ d.cow_id }}</strong>
-          <span class="text-muted">
-            
-              — conf {{ '%.2f' % d.confidence }} 
-          </span>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+  <h3 class="mt-5">Resultados</h3>
+  {% for card in cards %}
+    <div class="image-card">
+      <img src="{{ card.url }}" class="rounded" alt="Preview">
+      <div class="result-box">
+        <ul class="list-unstyled pred-list">
+          {% for d in card.results %}
+            <li class="mb-2">
+              <div><strong>Vaca identificada:</strong> {{ d.label }}</div>
+              <div>
+                <small>Probabilidad detección:</small>
+                <strong>{{ (d.det_confidence * 100)|round(1) }}&#37;</strong>
+              </div>
+              <div>
+                <small>Distancia al embedding:</small>
+                <strong>{{ '%.3f' % d.distance }}</strong>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endfor %}
 {% endif %}
+
 {% endblock %}
-<!-- — conf {{ '%.2f' % d.confidence }} (dist {{ '%.3f' % d.distance }}) -->

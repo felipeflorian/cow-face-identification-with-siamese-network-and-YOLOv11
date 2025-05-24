@@ -14,6 +14,7 @@ class DummyDetector:
                  "confidence": 0.99}]
     
 
+
 class YoloDetector:
     def __init__(self, weights=None, conf=0.5, img_size=640):
         if weights is None:
