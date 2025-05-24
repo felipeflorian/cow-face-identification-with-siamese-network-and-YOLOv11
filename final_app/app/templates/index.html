@@ -52,28 +52,32 @@
 
 {% if identified %}
   <h3 class="mt-5">Resultados</h3>
-  {% for card in cards %}
-    <div class="image-card">
-      <img src="{{ card.url }}" class="rounded" alt="Preview">
-      <div class="result-box">
-        <ul class="list-unstyled pred-list">
-          {% for d in card.results %}
-            <li class="mb-2">
-              <div><strong>Vaca identificada:</strong> {{ d.label }}</div>
-              <div>
-                <small>Probabilidad detección:</small>
-                <strong>{{ (d.det_confidence * 100)|round(1) }}&#37;</strong>
-              </div>
-              <div>
-                <small>Distancia al embedding:</small>
-                <strong>{{ '%.3f' % d.distance }}</strong>
-              </div>
-            </li>
-          {% endfor %}
-        </ul>
+  <div class="row">
+    {% for card in cards %}
+      <div class="col-sm-6 col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="{{ card.url }}" class="card-img-top" alt="Preview">
+          <div class="card-body p-2">
+            <ul class="list-unstyled mb-0">
+              {% for d in card.results %}
+                <li class="mb-2">
+                  <div><strong>Vaca identificada:</strong> {{ d.label }}</div>
+                  <div>
+                    <small>Prob. detección:</small>
+                    <strong>{{ (d.det_confidence * 100)|round(1) }}&#37;</strong>
+                  </div>
+                  <div>
+                    <small>Distancia:</small>
+                    <strong>{{ '%.3f' % d.distance }}</strong>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
+  </div>
 {% endif %}
 
 {% endblock %}
