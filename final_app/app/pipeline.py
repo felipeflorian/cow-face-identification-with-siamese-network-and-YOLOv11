@@ -41,6 +41,8 @@ class CowIDPipeline:
 
         self.target_size = (100,150)
         
+        self.gallery_pth = gallery_pth
+        
         # 5) Transformación idéntica a la de eval en entrenamiento
         # self.transform = transforms.Compose([
         #     transforms.Resize(256),
@@ -106,6 +108,8 @@ class CowIDPipeline:
             Devuelve True si todo OK, False si no detectó nada.
             """
             dets = self.detector.predict(img)
+            print (f"Encontradas {len(dets)} detecciones")
+
             if not dets:
                 return False
 
