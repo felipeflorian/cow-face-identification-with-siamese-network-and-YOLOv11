@@ -1,83 +1,95 @@
-<!-- templates/index.html -->
 {% extends "base.html" %}
 {% block title %}Identificar vacas | Cow Face ID{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style_table.css') }}">
-    <style>
-    .result‐box {
-      max-height: 200px;
+  <style>
+    /* Columna de formulario con separador más a la derecha */
+    .form-column {
+      padding-right: 2.5rem;
+      border-right: 4px solid #ccc;
+    }
+    /* Título de resultados siempre visible */
+    .results-header {
+      font-size: 1.75rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    /* Panel de resultados con fondo y borde azul */
+    .results-panel {
+      max-height: 75vh;
       overflow-y: auto;
-      border: 1px solid #ddd;
-      padding: .5rem;
-      margin-top: .5rem;
-    }
-    .image-card {
-      display: flex;
-      margin-bottom: 2rem;
-    }
-    .image-card img {
-      max-width: 200px;
-      margin-right: 1rem;
-    }
-    .pred-list li {
-      padding: .25rem 0;
+      padding: 1rem;
+      background: #fff;
+      border: 2px solid #007bff;
+      border-radius: .25rem;
     }
   </style>
-
 {% endblock %}
 
 {% block content %}
-<div id="card">
-  <div id="card-content">
-    <h2 id="card-title">Identificar vacas</h2>
-    <div class="underline-title"></div>
-
-    <form class="form" method="post"
-          action="{{ url_for('web.identify_web') }}"
-          enctype="multipart/form-data">
-      <label for="images" class="form-label mt-3">Sube una o más imágenes</label>
-      <input id="images" class="form-control form-content"
-             type="file" name="images" accept="image/*" multiple required>
-      <div class="form-border"></div>
-
-      <button id="submit-btn" class="btn btn-primary mt-3">
-        Subir y analizar
-      </button>
-    </form>
-  </div>
-</div>
-
-
-
-{% if identified %}
-  <h3 class="mt-5">Resultados</h3>
   <div class="row">
-    {% for card in cards %}
-      <div class="col-sm-6 col-md-4 mb-4">
-        <div class="card h-100">
-          <img src="{{ card.url }}" class="card-img-top" alt="Preview">
-          <div class="card-body p-2">
-            <ul class="list-unstyled mb-0">
-              {% for d in card.results %}
-                <li class="mb-2">
-                  <div><strong>Vaca identificada:</strong> {{ d.label }}</div>
-                  <div>
-                    <small>Prob. detección:</small>
-                    <strong>{{ (d.det_confidence * 100)|round(1) }}&#37;</strong>
-                  </div>
-                  <div>
-                    <small>Distancia:</small>
-                    <strong>{{ '%.3f' % d.distance }}</strong>
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
+    <!-- IZQUIERDA: formulario -->
+    <div class="col-md-5 form-column">
+      <div id="card">
+        <div id="card-content">
+          <h2 id="card-title">Identificar vacas</h2>
+          <div class="underline-title"></div>
+          <form method="post"
+                action="{{ url_for('web.identify_web') }}"
+                enctype="multipart/form-data">
+            <label for="images" class="form-label mt-3">Sube una o más imágenes</label>
+            <input id="images" class="form-control mb-3"
+                   type="file" name="images"
+                   accept="image/*" multiple required>
+            <button class="btn btn-primary w-100">Subir y analizar</button>
+          </form>
         </div>
       </div>
-    {% endfor %}
-  </div>
-{% endif %}
+    </div>
 
+  
+
+    <!-- DERECHA: resultados -->
+    <div class="col-md-7">
+      <div class="results-header">Resultados</div>
+      <div class="results-panel">
+        {% if identified %}
+          <div class="row">
+            {% for card in cards %}
+              <div class="col-sm-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                  <img src="{{ card.url }}" class="card-img-top" alt="Preview">
+                  <div class="card-body p-2">
+                    <ul class="list-unstyled mb-0">
+                    {% if card.results %}
+                      {% for d in card.results %}
+                        <li class="mb-2">
+                          <div><strong>Vaca identificada:</strong> {{ d.label }}</div>
+                          <div><small>Det. conf.:</small>
+                              <strong>{{ (d.det_confidence * 100)|round(1) }}&#37;</strong>
+                          </div>
+                          <div><small>Distancia:</small>
+                              <strong>{{ '%.3f' % d.distance }}</strong>
+                          </div>
+                        </li>
+                      {% endfor %}
+                    {% else %}
+                      <li class="mb-2">
+                        No se pudo detectar la presencia de ninguna vaca en esta imagen.
+                      </li>
+                    {% endif %}
+                  </ul>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted">Los resultados aparecerán aquí después de subir imágenes.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
