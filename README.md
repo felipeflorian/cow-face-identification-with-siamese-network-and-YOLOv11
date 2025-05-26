@@ -42,11 +42,11 @@ Contiene todos los archivos relacionados con la aplicación Flask diseñada para
 
 Este directorio incluye los datasets usados para el entrenamiento, organizados en las siguientes subcarpetas:
 
--   `**Vacas**`: Contiene las imágenes originales de las vacas de una finca lechera colombiana, junto con las etiquetas específicas asociadas a la cara del animal.
+-   `Vacas`: Contiene las imágenes originales de las vacas de una finca lechera colombiana, junto con las etiquetas específicas asociadas a la cara del animal.
     
--   `**Cara**`: Incluye el nuevo dataset generado mediante el script `dataset_creation_yolo_format.ipynb`, enfocado exclusivamente en imágenes faciales.
+-   `Cara`: Incluye el nuevo dataset generado mediante el script `dataset_creation_yolo_format.ipynb`, enfocado exclusivamente en imágenes faciales.
     
--   `**Cattely-Cattle-Face-Images-Dataset**`: Dataset adicional obtenido del repositorio [Cattely-Cattle-Face-Images-Dataset](https://github.com/aideep1400/Cattely-Cattle-Face-Images-Dataset). Se agradece a los autores originales por proporcionar estos datos para la investigación y desarrollo.
+-   `Cattely-Cattle-Face-Images-Dataset`: Dataset adicional obtenido del repositorio [Cattely-Cattle-Face-Images-Dataset](https://github.com/aideep1400/Cattely-Cattle-Face-Images-Dataset). Se agradece a los autores originales por proporcionar estos datos para la investigación y desarrollo.
 
  
 ## Probar la Aplicación Flask Desplegada
