@@ -53,7 +53,7 @@ Este directorio incluye los datasets usados para el entrenamiento, organizados e
 
 Se puede acceder y probar la aplicación desplegada en la siguiente URL:
 
-[http://35.225.94.196:8080](http://35.225.94.196:8080)
+[http://34.69.200.14:8080](http://35.225.94.196:8080)
 
 ## Instalación y Ejecución Aplicación Flask
 
